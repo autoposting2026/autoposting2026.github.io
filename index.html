@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSEO - AI Content Autopilot</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // Indigo 600
+                        secondary: '#111827', // Gray 900
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        
+        /* PAGE LOAD ANIMATIONS */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-on-load { opacity: 0; animation: fadeUp 0.8s ease-out forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+
+        /* Typing cursor effect */
+        .typing-cursor::after { content: '|'; animation: blink 1s step-end infinite; color: #4F46E5; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* ENHANCED ROBOT ANIMATIONS */
+        @keyframes robotHover { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+        @keyframes pulseSignal { 0% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.2; transform: scale(1.2); } }
+        @keyframes eyeBlink { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(0.1); } }
+        @keyframes publishStream { 0% { stroke-dashoffset: 200; } 100% { stroke-dashoffset: 0; } }
+        @keyframes scanBeam { 0%, 100% { transform: translateY(0px); opacity: 0.8; } 50% { transform: translateY(80px); opacity: 0.4; } }
+        @keyframes floatParticles { 0% { transform: translateY(0) opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
+        
+        .ani-hover { animation: robotHover 4s ease-in-out infinite; }
+        .ani-pulse { animation: pulseSignal 2s ease-in-out infinite; transform-origin: center; }
+        .ani-blink { animation: eyeBlink 5s infinite; transform-origin: center; }
+        .ani-stream { animation: publishStream 3s linear infinite; stroke-dasharray: 20; }
+        .ani-scan { animation: scanBeam 2s ease-in-out infinite; }
+        .ani-particle { animation: floatParticles 4s linear infinite; }
+
+        /* FAQ Accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: fadeUp 0.3s ease-in-out; }
+
+        /* ========================================================
+           BULLETPROOF GOOGLE TRANSLATE CSS OVERRIDES
+           ======================================================== */
+        /* Hide the widget by pushing it off-screen so Google still loads it */
+        #google_translate_element { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
+        
+        /* Force body top to 0 and hide all Google iframe banners */
+        body { top: 0px !important; position: static !important; min-height: 100vh; }
+        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; }
+        
+        /* Hide tooltips and hover highlights on translated text */
+        #goog-gt-tt, .goog-tooltip { display: none !important; visibility: hidden !important; }
+        .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+        
+        /* Custom Dropdown Animation */
+        .dropdown-menu { display: none; }
+        .dropdown:hover .dropdown-menu { display: block; animation: fadeUp 0.15s ease-out forwards; }
+    </style>
+
+    <!-- AUTO GOOGLE TRANSLATE & INSTANT BUTTON SCRIPT -->
+    <script type="text/javascript">
+        const defaultSiteLang = 'en'; 
+
+        // Initialize hidden Google widget
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: defaultSiteLang,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        // Trigger instant translation without reloading the page
+        function changeLanguage(langCode) {
+            // Find the hidden Google Translate dropdown
+            const selectElement = document.querySelector('.goog-te-combo');
+            if (selectElement) {
+                // Change its value to the selected language
+                selectElement.value = langCode;
+                // Force Google to trigger the translation event
+                selectElement.dispatchEvent(new Event('change'));
+            }
+            
+            // Save preference in a cookie so it remembers next time
+            document.cookie = `googtrans=/${defaultSiteLang}/${langCode}; path=/`;
+            if (window.location.hostname) {
+                document.cookie = `googtrans=/${defaultSiteLang}/${langCode}; domain=.${window.location.hostname}; path=/`;
+            }
+        }
+
+        // Auto-Detect Browser Language on First Visit
+        window.onload = function() {
+            setTimeout(() => {
+                const browserLang = (navigator.language || navigator.userLanguage).split('-')[0];
+                const hasTranslateCookie = document.cookie.indexOf('googtrans=') !== -1;
+
+                // If user isn't English and hasn't translated yet, translate instantly
+                if (browserLang !== defaultSiteLang && !hasTranslateCookie) {
+                    changeLanguage(browserLang);
+                }
+            }, 1000); // 1-second delay to ensure Google's script has fully loaded
+        };
+
+        // AGGRESSIVE ANTI-BANNER SCRIPT: Prevents Google from pushing the site down
+        setInterval(function() {
+            if (document.body.style.top !== '0px') {
+                document.body.style.top = '0px';
+            }
+        }, 50);
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- OFF-SCREEN Default Google Translate Element -->
+    <div id="google_translate_element" class="notranslate" translate="no"></div>
+
+    <!-- Navigation -->
+    <nav class="container mx-auto px-4 sm:px-6 py-4 bg-white shadow-sm sticky top-0 z-[9999] rounded-b-2xl animate-on-load w-full">
+        <div class="flex justify-between items-center w-full">
+            
+            <!-- Logo -->
+            <div class="text-2xl font-bold text-secondary flex items-center hover:scale-105 transition shrink-0 mr-4">
+                <span class="text-white bg-secondary p-2 rounded-lg text-lg font-bold mr-2 shadow-lg">A</span>AutoSEO
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden xl:flex space-x-4 lg:space-x-6 items-center flex-grow justify-center overflow-hidden">
+                <a href="#manifesto" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">Why Us</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">How it Works</a>
+                <a href="#features" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">Features</a>
+                <a href="#pricing" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">Pricing</a>
+                <a href="#faq" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">FAQ</a>
+                <a href="mailto:office.lltd@gmail.com" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">Contact</a>
+            </div>
+            
+            <!-- Right Side Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-4 shrink-0">
+                
+                <!-- CUSTOM PREMIUM LANGUAGE DROPDOWN (Expanded List) -->
+                <div class="relative dropdown shrink-0 z-50 notranslate" translate="no">
+                    <button class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 md:px-4 py-2 rounded-lg font-medium transition duration-200 border border-gray-200">
+                        <i class="fas fa-globe text-primary"></i>
+                        <span class="hidden sm:inline-block">Language</span>
+                        <i class="fas fa-chevron-down text-xs ml-1"></i>
+                    </button>
+                    <!-- Invisible bridge to stop hover drop-off -->
+                    <div class="dropdown-menu absolute right-0 top-full pt-2 w-48">
+                        <!-- Scrollable container for many languages -->
+                        <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2 max-h-64 overflow-y-auto">
+                            <button onclick="changeLanguage('en')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇬🇧 English</button>
+                            <button onclick="changeLanguage('bg')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇧🇬 Български</button>
+                            <button onclick="changeLanguage('es')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇪🇸 Español</button>
+                            <button onclick="changeLanguage('de')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇩🇪 Deutsch</button>
+                            <button onclick="changeLanguage('fr')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇫🇷 Français</button>
+                            <button onclick="changeLanguage('it')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇮🇹 Italiano</button>
+                            <button onclick="changeLanguage('pt')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇵🇹 Português</button>
+                            <button onclick="changeLanguage('nl')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇳🇱 Nederlands</button>
+                            <button onclick="changeLanguage('pl')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇵🇱 Polski</button>
+                            <button onclick="changeLanguage('tr')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇹🇷 Türkçe</button>
+                            <button onclick="changeLanguage('ro')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇷🇴 Română</button>
+                            <button onclick="changeLanguage('el')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇬🇷 Ελληνικά</button>
+                            <button onclick="changeLanguage('ru')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇷🇺 Русский</button>
+                            <button onclick="changeLanguage('zh-CN')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇨🇳 中文 (简体)</button>
+                            <button onclick="changeLanguage('ar')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇦🇪 العربية</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buy Button -->
+                <a href="YOUR_STRIPE_LINK_HERE" class="hidden md:block bg-primary text-white px-5 py-2 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-md shrink-0 whitespace-nowrap">Buy now</a>
+
+                <!-- Mobile/Tablet Menu Button -->
+                <button id="mobile-menu-btn" class="xl:hidden text-secondary focus:outline-none p-2 shrink-0">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile/Tablet Dropdown -->
+        <div id="mobile-menu" class="hidden xl:hidden flex flex-col space-y-4 pt-4 pb-2 border-t border-gray-100 mt-4">
+            <a href="#manifesto" class="text-gray-600 hover:text-primary font-medium px-2">Why Us</a>
+            <a href="#how-it-works" class="text-gray-600 hover:text-primary font-medium px-2">How it Works</a>
+            <a href="#features" class="text-gray-600 hover:text-primary font-medium px-2">Features</a>
+            <a href="#pricing" class="text-gray-600 hover:text-primary font-medium px-2">Pricing</a>
+            <a href="#faq" class="text-gray-600 hover:text-primary font-medium px-2">FAQ</a>
+            <a href="YOUR_STRIPE_LINK_HERE" class="bg-primary text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md">Buy now</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="container mx-auto px-6 py-16 md:py-24 text-center">
+        <div class="inline-flex items-center space-x-2 bg-green-50 text-green-700 px-4 py-1.5 rounded-full text-sm font-bold mb-6 animate-on-load">
+            <i class="fas fa-star text-green-500"></i>
+            <span class="notranslate" translate="no">Trustpilot - 4.9 Excellent (5 stars rating)</span>
+        </div>
+        
+        <h1 class="text-4xl md:text-6xl font-extrabold text-secondary mb-6 leading-tight max-w-4xl mx-auto animate-on-load delay-100">
+            Get customers from <span class="text-primary inline-block">Google & ChatGPT</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium animate-on-load delay-200 leading-relaxed mb-4">
+            AutoSEO writes, optimizes, and posts SEO content proven to rank on Google and ChatGPT.
+        </p>
+
+        <div class="notranslate h-12 md:h-16 flex justify-center items-start w-full animate-on-load delay-200" translate="no">
+            <span id="animated-text" class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600 typing-cursor font-bold text-2xl md:text-3xl block"></span>
+        </div>
+
+        <div class="flex justify-center mb-6 animate-on-load delay-300">
+            <a href="YOUR_STRIPE_LINK_HERE" class="w-full sm:w-auto bg-secondary text-white px-12 py-4 text-lg rounded-full font-bold hover:bg-gray-800 transition shadow-xl transform hover:scale-105">Buy now</a>
+        </div>
+        <p class="text-sm text-gray-500 mb-12 animate-on-load delay-400">4.9/5 from 1,783 verified customers</p>
+
+        <!-- ENHANCED ANIMATED ROBOT HERO GRAPHIC -->
+        <div class="notranslate w-full max-w-4xl mx-auto rounded-3xl p-4 md:p-8 bg-gray-900 shadow-2xl relative flex justify-center items-center overflow-hidden animate-on-load delay-400 border border-gray-800" translate="no">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" class="w-full h-auto">
+                <defs>
+                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="15" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                    <filter id="blue-glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="8" result="blur" />
+                        <feFlood flood-color="#4F46E5" result="color"/>
+                        <feComposite in="color" in2="blur" operator="in" result="glow"/>
+                        <feComposite in="SourceGraphic" in2="glow" operator="over"/>
+                    </filter>
+                </defs>
+                
+                <rect width="800" height="450" fill="#0f172a" rx="24"/>
+                <g stroke="#1e293b" stroke-width="2" opacity="0.5">
+                    <line x1="0" y1="100" x2="800" y2="100"/> <line x1="0" y1="200" x2="800" y2="200"/>
+                    <line x1="0" y1="300" x2="800" y2="300"/> <line x1="0" y1="400" x2="800" y2="400"/>
+                    <line x1="200" y1="0" x2="200" y2="450"/> <line x1="400" y1="0" x2="400" y2="450"/>
+                    <line x1="600" y1="0" x2="600" y2="450"/>
+                </g>
+
+                <text x="100" y="300" fill="#4F46E5" opacity="0.3" font-family="monospace" class="ani-particle">01001</text>
+                <text x="300" y="400" fill="#4F46E5" opacity="0.3" font-family="monospace" class="ani-particle" style="animation-delay: 1s;">10110</text>
+                <text x="700" y="250" fill="#4F46E5" opacity="0.3" font-family="monospace" class="ani-particle" style="animation-delay: 2s;">00111</text>
+
+                <g transform="translate(80, 150)">
+                    <rect width="140" height="100" rx="12" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+                    <text x="70" y="40" font-family="sans-serif" font-size="14" font-weight="bold" fill="#94a3b8" text-anchor="middle">YOUR WEBSITE</text>
+                    <text x="70" y="65" font-family="sans-serif" font-size="12" fill="#4F46E5" text-anchor="middle">Scanning...</text>
+                    <line x1="10" y1="20" x2="130" y2="20" stroke="#00ffcc" stroke-width="4" filter="url(#glow)" class="ani-scan"/>
+                </g>
+                
+                <path d="M 230 200 L 330 200" stroke="#4F46E5" stroke-width="6" stroke-dasharray="10 10" class="ani-stream"/>
+                
+                <g class="ani-hover">
+                    <circle cx="400" cy="210" r="120" fill="#4F46E5" opacity="0.15" filter="url(#glow)"/>
+                    <rect x="300" y="100" width="200" height="220" rx="40" fill="#111827" stroke="#4F46E5" stroke-width="6" filter="url(#blue-glow)"/>
+                    <circle cx="400" cy="270" r="25" fill="#1e293b" stroke="#4F46E5" stroke-width="4"/>
+                    <circle cx="400" cy="270" r="10" fill="#00ffcc" filter="url(#glow)" class="ani-pulse"/>
+                    <rect x="340" y="150" width="40" height="40" rx="10" fill="#1e293b" stroke="#4F46E5" stroke-width="3"/>
+                    <rect x="420" y="150" width="40" height="40" rx="10" fill="#1e293b" stroke="#4F46E5" stroke-width="3"/>
+                    <circle cx="360" cy="170" r="8" fill="#00ffcc" class="ani-blink" filter="url(#glow)"/>
+                    <circle cx="440" cy="170" r="8" fill="#00ffcc" class="ani-blink" filter="url(#glow)"/>
+                    <path d="M 370 210 Q 400 230 430 210" stroke="#00ffcc" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <line x1="400" y1="100" x2="400" y2="40" stroke="#4F46E5" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="400" cy="30" r="10" fill="#00ffcc" filter="url(#glow)"/>
+                    <circle cx="400" cy="30" r="25" fill="none" stroke="#00ffcc" stroke-width="2" class="ani-pulse" opacity="0.5"/>
+                    <circle cx="400" cy="30" r="45" fill="none" stroke="#00ffcc" stroke-width="1" class="ani-pulse" style="animation-delay: 0.3s;" opacity="0.3"/>
+                    <ellipse cx="400" cy="350" rx="80" ry="15" fill="#4F46E5" opacity="0.4" filter="url(#glow)"/>
+                    <ellipse cx="400" cy="350" rx="40" ry="5" fill="#ffffff" opacity="0.8"/>
+                </g>
+                
+                <path d="M 480 200 C 530 200 550 100 620 100" fill="none" stroke="#4F46E5" stroke-width="6" stroke-dasharray="10 10" class="ani-stream"/>
+                
+                <g transform="translate(620, 50)">
+                    <rect width="100" height="140" rx="12" fill="#ffffff" stroke="#00ffcc" stroke-width="4" filter="url(#glow)"/>
+                    <rect x="15" y="20" width="70" height="40" rx="4" fill="#e2e8f0"/>
+                    <line x1="15" y1="80" x2="85" y2="80" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="15" y1="100" x2="85" y2="100" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="15" y1="120" x2="50" y2="120" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+                    <circle cx="100" cy="130" r="15" fill="#10b981" filter="url(#glow)"/>
+                    <path d="M 94 130 L 98 135 L 106 125" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+            </svg>
+        </div>
+    </header>
+
+    <!-- The Manifesto Section -->
+    <section id="manifesto" class="bg-indigo-50 py-20 border-y border-indigo-100">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-8">Why we built AutoSEO</h2>
+            <div class="text-lg md:text-xl text-gray-700 space-y-6 leading-relaxed text-left md:text-center">
+                <p>We built AutoSEO because we got tired of watching good businesses get crushed by worse ones that just rank on Google.</p>
+                <p>You know you need SEO. You tried blogging - wrote three posts, took forever, had no clue if you were doing it right. Or you looked at agencies charging $5k/month and thought "yeah, not happening."</p>
+                <p class="font-bold text-secondary">AutoSEO does the whole thing. Writes articles, publishes them to your site, every day. You don't touch it.</p>
+                <p>You start showing up when people search. Customers find you instead of your competitors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proof / Rankings Banner -->
+    <section class="bg-secondary text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Content that ranks on Google & ChatGPT</h2>
+            <p class="text-indigo-200 text-lg md:text-xl font-medium">Over 200k articles, 1.6 billion impressions & 30 million clicks.</p>
+        </div>
+    </section>
+
+    <!-- How It Works (3 Steps) -->
+    <section id="how-it-works" class="container mx-auto px-6 py-24">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-bold text-secondary mb-4">How AutoSEO Works</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">They get clicks. You? Get visitors online from high-quality articles tailored for your business. No skills needed.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="text-center group p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-xl transition duration-300">
+                <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-extrabold mx-auto mb-6 shadow-lg group-hover:scale-110 transition">1</div>
+                <h3 class="text-xl font-bold mb-3 text-secondary">Finds Best Keywords</h3>
+                <p class="text-gray-600 mb-4">AutoSEO learns which keywords will get you visible, then writes the content proven to rank.</p>
+                <span class="bg-indigo-50 text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">Keyword difficulty mapped</span>
+            </div>
+            
+            <div class="text-center group p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-xl transition duration-300">
+                <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-extrabold mx-auto mb-6 shadow-lg group-hover:scale-110 transition">2</div>
+                <h3 class="text-xl font-bold mb-3 text-secondary">Get Content</h3>
+                <p class="text-gray-600 mb-4">Our SEO autopilot publishes fresh content ideas every day. Unlimited blog post and content ideas.</p>
+                <span class="bg-indigo-50 text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">100% of SEO automated</span>
+            </div>
+            
+            <div class="text-center group p-8 rounded-2xl bg-white border border-gray-100 hover:shadow-xl transition duration-300">
+                <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-extrabold mx-auto mb-6 shadow-lg group-hover:scale-110 transition">3</div>
+                <h3 class="text-xl font-bold mb-3 text-secondary">Publish & grow traffic</h3>
+                <p class="text-gray-600 mb-4">Launch 10x more SEO content that ranks on Google and ChatGPT. Then it writes and publishes daily content to your site.</p>
+                <span class="bg-indigo-50 text-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">Auto-publish daily</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / Capabilities -->
+    <section id="features" class="bg-gray-50 py-24 border-t border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-8">Set it up once. Focus on your business.</h2>
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="text-xl font-bold text-secondary flex items-center"><i class="fas fa-brain text-primary mr-3 text-2xl"></i> Learns Your Content</h4>
+                            <p class="text-gray-600 mt-2 ml-9">Picks up your brand voice and writing style. Every article sounds like you wrote it yourself. Style capture built-in.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-secondary flex items-center"><i class="fas fa-users text-primary mr-3 text-2xl"></i> Understands Your Customers</h4>
+                            <p class="text-gray-600 mt-2 ml-9">Learns about your target audience, and niche - then writes content that connects using top AI platforms.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-secondary flex items-center"><i class="fas fa-paper-plane text-primary mr-3 text-2xl"></i> Publish with confidence</h4>
+                            <p class="text-gray-600 mt-2 ml-9">AutoSEO writes and publishes SEO articles automatically - every day. Edit & customize anything, no SEO skills needed.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comparison Table -->
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 overflow-hidden w-full">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-secondary">One tool to do it all</h3>
+                        <p class="text-green-600 font-bold mt-1 text-lg">Save $5,000/month</p>
+                    </div>
+                    
+                    <div class="w-full overflow-x-auto pb-4">
+                        <table class="w-full text-left border-collapse min-w-[500px]">
+                            <thead>
+                                <tr class="border-b-2 border-gray-100">
+                                    <th class="py-4 px-2 font-bold text-gray-500 w-2/5">Feature</th>
+                                    <th class="py-4 px-2 font-bold text-primary text-center bg-indigo-50 rounded-t-xl">AutoSEO</th>
+                                    <th class="py-4 px-2 font-bold text-gray-400 text-center">Agency</th>
+                                    <th class="py-4 px-2 font-bold text-gray-400 text-center">DIY</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm md:text-base">
+                                <tr class="border-b border-gray-50">
+                                    <td class="py-4 px-2 text-gray-700 font-medium">Works while you sleep</td>
+                                    <td class="py-4 px-2 text-center bg-indigo-50 text-green-500 font-bold"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                </tr>
+                                <tr class="border-b border-gray-50">
+                                    <td class="py-4 px-2 text-gray-700 font-medium">Top-ranking content</td>
+                                    <td class="py-4 px-2 text-center bg-indigo-50 text-green-500 font-bold"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-green-500"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                </tr>
+                                <tr class="border-b border-gray-50">
+                                    <td class="py-4 px-2 text-gray-700 font-medium">Personalized for your brand</td>
+                                    <td class="py-4 px-2 text-center bg-indigo-50 text-green-500 font-bold"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-green-500"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                </tr>
+                                <tr class="border-b border-gray-50">
+                                    <td class="py-4 px-2 text-gray-700 font-medium">Easy setup, zero work</td>
+                                    <td class="py-4 px-2 text-center bg-indigo-50 text-green-500 font-bold"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-2 text-gray-700 font-medium rounded-bl-xl">Multi-language support</td>
+                                    <td class="py-4 px-2 text-center bg-indigo-50 text-green-500 font-bold rounded-b-xl"><i class="fas fa-check"></i> Yes</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                    <td class="py-4 px-2 text-center text-red-400"><i class="fas fa-times"></i> No</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Languages & CMS integrations -->
+    <section class="bg-white py-16 border-y border-gray-200">
+        <div class="container mx-auto px-6 text-center">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-secondary">Works with your website</h3>
+                    <p class="text-gray-500 mb-6">Post across every major CMS platform or export it.</p>
+                    <div class="flex justify-center flex-wrap gap-6 items-center opacity-70 grayscale">
+                        <div class="text-xl font-bold"><i class="fa-brands fa-wordpress mr-2"></i>WordPress</div>
+                        <div class="text-xl font-bold"><i class="fa-brands fa-shopify mr-2"></i>Shopify</div>
+                        <div class="text-xl font-bold"><i class="fa-solid fa-w mr-2"></i>Webflow</div>
+                        <div class="text-xl font-bold"><i class="fa-solid fa-ghost mr-2"></i>Ghost</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-secondary">Supports 50+ languages</h3>
+                    <p class="text-gray-500 mb-6">Expand your audience with globally-optimized articles.</p>
+                    <div class="flex justify-center flex-wrap gap-4 items-center">
+                        <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold text-gray-600">English</span>
+                        <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold text-gray-600">Spanish</span>
+                        <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold text-gray-600">French</span>
+                        <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold text-gray-600">German</span>
+                        <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-semibold text-gray-600">+46 More</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="bg-secondary text-white py-24">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Start for <span class="text-primary">€49</span> /month</h2>
+                <p class="text-gray-400 text-lg max-w-xl mx-auto">Stop renting traffic. Replace expensive ad spend with compounding organic growth.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Receipt Graphic -->
+                <div class="px-4 md:px-0 notranslate" translate="no">
+                    <svg viewBox="0 0 500 600" class="w-full h-auto rounded-2xl drop-shadow-2xl transform md:-rotate-2 hover:rotate-0 transition duration-500">
+                        <path d="M 50 50 L 450 50 L 450 530 L 430 550 L 410 530 L 390 550 L 370 530 L 350 550 L 330 530 L 310 550 L 290 530 L 270 550 L 250 530 L 230 550 L 210 530 L 190 550 L 170 530 L 150 550 L 130 530 L 110 550 L 90 530 L 70 550 L 50 530 Z" fill="#ffffff"/>
+                        <text x="250" y="120" font-family="monospace" font-size="26" font-weight="bold" fill="#111827" text-anchor="middle">MONTHLY TRAFFIC BILL</text>
+                        <line x1="80" y1="150" x2="420" y2="150" stroke="#9ca3af" stroke-width="2" stroke-dasharray="6 6"/>
+                        <text x="80" y="200" font-family="monospace" font-size="20" fill="#6b7280">PPC Agency Retainer</text>
+                        <text x="420" y="200" font-family="monospace" font-size="20" fill="#ef4444" text-anchor="end">€2,000.00</text>
+                        <text x="80" y="250" font-family="monospace" font-size="20" fill="#6b7280">Ad Spend</text>
+                        <text x="420" y="250" font-family="monospace" font-size="20" fill="#ef4444" text-anchor="end">€1,500.00</text>
+                        <line x1="80" y1="300" x2="420" y2="300" stroke="#9ca3af" stroke-width="2" stroke-dasharray="6 6"/>
+                        <text x="80" y="350" font-family="monospace" font-size="24" font-weight="bold" fill="#111827">AGENCY TOTAL</text>
+                        <text x="420" y="350" font-family="monospace" font-size="24" font-weight="bold" fill="#ef4444" text-anchor="end">€3,500.00</text>
+                        <rect x="70" y="400" width="360" height="80" rx="12" fill="#4F46E5"/>
+                        <text x="100" y="448" font-family="sans-serif" font-size="24" font-weight="bold" fill="#ffffff">AutoSEO Total</text>
+                        <text x="400" y="448" font-family="sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="end">€49.00</text>
+                    </svg>
+                </div>
+
+                <!-- Pricing Table Card -->
+                <div class="bg-white text-secondary p-8 md:p-10 rounded-3xl shadow-2xl border-t-8 border-primary relative transform md:scale-105 mx-4 md:mx-0">
+                    <div class="absolute -top-4 -right-2 md:-right-4 bg-primary text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg">CANCEL ANYTIME</div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl md:text-2xl font-bold text-secondary">SEO Autopilot</h3>
+                        <div class="text-right">
+                            <p class="text-3xl md:text-4xl font-extrabold text-primary">€49</p>
+                            <p class="text-gray-500 text-sm">/month</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-sm text-gray-700">
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> 100% of SEO work fully automated</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Unlimited blog post and content ideas</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Automatic daily publishing to your CMS</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Content proven to rank on Google & ChatGPT</li>
+                    </ul>
+
+                    <a href="YOUR_STRIPE_LINK_HERE" class="block text-center w-full bg-secondary text-white px-8 py-4 text-lg rounded-xl font-bold hover:bg-gray-800 transition shadow-lg transform hover:scale-105">Buy now</a>
+                    <p class="text-xs text-gray-400 mt-4 text-center"><i class="fas fa-lock mr-1"></i> Secure checkout via Stripe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expanded FAQ Section -->
+    <section id="faq" class="bg-gray-50 py-24">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <h2 class="text-3xl md:text-5xl font-bold text-center text-secondary mb-12">FAQ</h2>
+            
+            <div class="space-y-4">
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        What exactly does AutoSEO do?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">AutoSEO automates your entire content strategy. It finds low-competition keywords, writes highly optimized articles mimicking your brand voice, and publishes them directly to your website daily while you sleep.</div>
+                </details>
+                
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        How many articles can I generate per month?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Our system is designed to provide unlimited content ideas and automatically publish daily, giving you a steady stream of high-quality, SEO-optimized articles every month on autopilot.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        Can I connect AutoSEO to my existing website?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Yes! We natively push generated articles directly to major CMS platforms like WordPress, Shopify, Webflow, and Ghost. You can also export the content if you use a custom setup.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        Does AutoSEO handle technical SEO?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">AutoSEO focuses entirely on generating top-ranking content and on-page SEO (like H1/H2 tags and keyword density). It does not alter your site's backend code or server architecture.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        What languages does AutoSEO support?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">We support over 50+ languages, allowing you to easily expand your audience with globally-optimized articles. Our built-in site translator also helps users read your site natively!</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        Can I use my brand voice or custom tone?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Absolutely. AutoSEO automatically scans your existing website to capture your exact style, tone, and audience. Every article sounds personalized for your brand.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        Do I need any SEO knowledge to use AutoSEO?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">None at all. Easy setup, zero work. If you know your website's URL, you have all the knowledge needed. We handle the keyword research, difficulty analysis, and publishing.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        Does AutoSEO generate images for articles?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Yes, we can automatically pair your blog posts with relevant, high-quality images so they are visually engaging and ready to rank immediately.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        Is there a contract or minimum commitment?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">No. AutoSEO is a month-to-month service. You can cancel anytime directly from your dashboard, and you keep all the content we've already generated for you.</div>
+                </details>
+
+                <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
+                    <summary class="font-bold text-lg text-secondary p-6 flex justify-between items-center outline-none">
+                        What makes AutoSEO different from other SEO tools?
+                        <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Most tools (DIY) just give you data and make you do the work. AutoSEO is a true autopilot—it finds the keywords, writes the content, AND publishes it for you, replacing a $5,000/month agency.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Call to Action -->
+    <section class="bg-primary text-white py-24 text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-4">Ready to become <br class="hidden md:block">visible on Google?</h2>
+            <p class="text-xl md:text-2xl text-indigo-200 font-medium mb-10">(Without the agency fees)</p>
+            <a href="YOUR_STRIPE_LINK_HERE" class="inline-block bg-white text-primary px-12 py-4 text-xl rounded-full font-bold hover:bg-gray-100 transition shadow-2xl transform hover:scale-105">Buy now</a>
+        </div>
+    </section>
+
+    <!-- Footer & Contact -->
+    <footer class="bg-secondary py-12 border-t border-gray-800 text-gray-400">
+        <div class="container mx-auto px-6 text-center text-sm flex flex-col items-center">
+            <p class="mb-4 text-xl font-bold text-white flex items-center">
+                <span class="text-primary bg-white p-1 rounded text-sm mr-2">A</span>AutoSEO
+            </p>
+            
+            <p class="mb-2 text-base">Need help setting up or have custom requirements?</p>
+            <a href="mailto:office.lltd@gmail.com" class="text-white text-lg font-bold hover:text-primary transition mb-8"><i class="fas fa-envelope mr-2"></i>office.lltd@gmail.com</a>
+            
+            <div class="border-t border-gray-800 w-full max-w-md pt-6">
+                <p>&copy; 2026 AutoSEO SaaS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Advanced Typing Effect Script (Now strictly isolated from translation)
+        const textsToType = [
+            'all while you sleep.',
+            'proven to rank fast.',
+            'with zero daily effort.',
+            'on complete autopilot.'
+        ];
+        
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById('animated-text');
+        
+        function typeEffect() {
+            const currentText = textsToType[textIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = 100;
+            if (isDeleting) typeSpeed = 50;
+
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2000; 
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % textsToType.length;
+                typeSpeed = 500; 
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+
+        setTimeout(typeEffect, 1000);
+    </script>
+
+</body>
+</html>
