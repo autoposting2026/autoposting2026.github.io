@@ -57,27 +57,19 @@
         /* ========================================================
            BULLETPROOF GOOGLE TRANSLATE CSS OVERRIDES
            ======================================================== */
-        /* Hide the widget by pushing it off-screen so Google still loads it */
         #google_translate_element { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
-        
-        /* Force body top to 0 and hide all Google iframe banners */
         body { top: 0px !important; position: static !important; min-height: 100vh; }
         .skiptranslate iframe, .goog-te-banner-frame { display: none !important; visibility: hidden !important; height: 0 !important; }
-        
-        /* Hide tooltips and hover highlights on translated text */
         #goog-gt-tt, .goog-tooltip { display: none !important; visibility: hidden !important; }
         .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
         
-        /* Custom Dropdown Animation */
         .dropdown-menu { display: none; }
         .dropdown:hover .dropdown-menu { display: block; animation: fadeUp 0.15s ease-out forwards; }
     </style>
 
-    <!-- AUTO GOOGLE TRANSLATE & INSTANT BUTTON SCRIPT -->
     <script type="text/javascript">
         const defaultSiteLang = 'en'; 
 
-        // Initialize hidden Google widget
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: defaultSiteLang,
@@ -85,38 +77,28 @@
             }, 'google_translate_element');
         }
 
-        // Trigger instant translation without reloading the page
         function changeLanguage(langCode) {
-            // Find the hidden Google Translate dropdown
             const selectElement = document.querySelector('.goog-te-combo');
             if (selectElement) {
-                // Change its value to the selected language
                 selectElement.value = langCode;
-                // Force Google to trigger the translation event
                 selectElement.dispatchEvent(new Event('change'));
             }
-            
-            // Save preference in a cookie so it remembers next time
             document.cookie = `googtrans=/${defaultSiteLang}/${langCode}; path=/`;
             if (window.location.hostname) {
                 document.cookie = `googtrans=/${defaultSiteLang}/${langCode}; domain=.${window.location.hostname}; path=/`;
             }
         }
 
-        // Auto-Detect Browser Language on First Visit
         window.onload = function() {
             setTimeout(() => {
                 const browserLang = (navigator.language || navigator.userLanguage).split('-')[0];
                 const hasTranslateCookie = document.cookie.indexOf('googtrans=') !== -1;
-
-                // If user isn't English and hasn't translated yet, translate instantly
                 if (browserLang !== defaultSiteLang && !hasTranslateCookie) {
                     changeLanguage(browserLang);
                 }
-            }, 1000); // 1-second delay to ensure Google's script has fully loaded
+            }, 1000);
         };
 
-        // AGGRESSIVE ANTI-BANNER SCRIPT: Prevents Google from pushing the site down
         setInterval(function() {
             if (document.body.style.top !== '0px') {
                 document.body.style.top = '0px';
@@ -127,19 +109,15 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
 
-    <!-- OFF-SCREEN Default Google Translate Element -->
     <div id="google_translate_element" class="notranslate" translate="no"></div>
 
     <!-- Navigation -->
     <nav class="container mx-auto px-4 sm:px-6 py-4 bg-white shadow-sm sticky top-0 z-[9999] rounded-b-2xl animate-on-load w-full">
         <div class="flex justify-between items-center w-full">
-            
-            <!-- Logo -->
             <div class="text-2xl font-bold text-secondary flex items-center hover:scale-105 transition shrink-0 mr-4">
                 <span class="text-white bg-secondary p-2 rounded-lg text-lg font-bold mr-2 shadow-lg">A</span>AutoSEO
             </div>
             
-            <!-- Desktop Menu -->
             <div class="hidden xl:flex space-x-4 lg:space-x-6 items-center flex-grow justify-center overflow-hidden">
                 <a href="#manifesto" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">Why Us</a>
                 <a href="#how-it-works" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">How it Works</a>
@@ -149,19 +127,14 @@
                 <a href="mailto:office.lltd@gmail.com" class="text-gray-600 hover:text-primary transition font-medium whitespace-nowrap">Contact</a>
             </div>
             
-            <!-- Right Side Controls -->
             <div class="flex items-center space-x-2 sm:space-x-4 shrink-0">
-                
-                <!-- CUSTOM PREMIUM LANGUAGE DROPDOWN (Expanded List) -->
                 <div class="relative dropdown shrink-0 z-50 notranslate" translate="no">
                     <button class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 md:px-4 py-2 rounded-lg font-medium transition duration-200 border border-gray-200">
                         <i class="fas fa-globe text-primary"></i>
                         <span class="hidden sm:inline-block">Language</span>
                         <i class="fas fa-chevron-down text-xs ml-1"></i>
                     </button>
-                    <!-- Invisible bridge to stop hover drop-off -->
                     <div class="dropdown-menu absolute right-0 top-full pt-2 w-48">
-                        <!-- Scrollable container for many languages -->
                         <div class="bg-white rounded-xl shadow-xl border border-gray-100 py-2 max-h-64 overflow-y-auto">
                             <button onclick="changeLanguage('en')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇬🇧 English</button>
                             <button onclick="changeLanguage('bg')" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-primary font-medium transition">🇧🇬 Български</button>
@@ -181,18 +154,12 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Buy Button -->
                 <a href="YOUR_STRIPE_LINK_HERE" class="hidden md:block bg-primary text-white px-5 py-2 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-md shrink-0 whitespace-nowrap">Buy now</a>
-
-                <!-- Mobile/Tablet Menu Button -->
                 <button id="mobile-menu-btn" class="xl:hidden text-secondary focus:outline-none p-2 shrink-0">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
         </div>
-
-        <!-- Mobile/Tablet Dropdown -->
         <div id="mobile-menu" class="hidden xl:hidden flex flex-col space-y-4 pt-4 pb-2 border-t border-gray-100 mt-4">
             <a href="#manifesto" class="text-gray-600 hover:text-primary font-medium px-2">Why Us</a>
             <a href="#how-it-works" class="text-gray-600 hover:text-primary font-medium px-2">How it Works</a>
@@ -304,7 +271,7 @@
             <div class="text-lg md:text-xl text-gray-700 space-y-6 leading-relaxed text-left md:text-center">
                 <p>We built AutoSEO because we got tired of watching good businesses get crushed by worse ones that just rank on Google.</p>
                 <p>You know you need SEO. You tried blogging - wrote three posts, took forever, had no clue if you were doing it right. Or you looked at agencies charging $5k/month and thought "yeah, not happening."</p>
-                <p class="font-bold text-secondary">AutoSEO does the whole thing. Writes articles, publishes them to your site, every day. You don't touch it.</p>
+                <p class="font-bold text-secondary">AutoSEO does the whole thing. Writes articles, publishes them to your WordPress site, every day. You don't touch it.</p>
                 <p>You start showing up when people search. Customers find you instead of your competitors.</p>
             </div>
         </div>
@@ -366,7 +333,7 @@
                         </div>
                         <div>
                             <h4 class="text-xl font-bold text-secondary flex items-center"><i class="fas fa-paper-plane text-primary mr-3 text-2xl"></i> Publish with confidence</h4>
-                            <p class="text-gray-600 mt-2 ml-9">AutoSEO writes and publishes SEO articles automatically - every day. Edit & customize anything, no SEO skills needed.</p>
+                            <p class="text-gray-600 mt-2 ml-9">AutoSEO writes and publishes SEO articles directly to your WordPress - every day. Edit & customize anything, no SEO skills needed.</p>
                         </div>
                     </div>
                 </div>
@@ -431,14 +398,12 @@
     <section class="bg-white py-16 border-y border-gray-200">
         <div class="container mx-auto px-6 text-center">
             <div class="grid md:grid-cols-2 gap-12">
+                <!-- EXCLUSIVE WORDPRESS FOCUS -->
                 <div>
                     <h3 class="text-2xl font-bold mb-4 text-secondary">Works with your website</h3>
-                    <p class="text-gray-500 mb-6">Post across every major CMS platform or export it.</p>
-                    <div class="flex justify-center flex-wrap gap-6 items-center opacity-70 grayscale">
-                        <div class="text-xl font-bold"><i class="fa-brands fa-wordpress mr-2"></i>WordPress</div>
-                        <div class="text-xl font-bold"><i class="fa-brands fa-shopify mr-2"></i>Shopify</div>
-                        <div class="text-xl font-bold"><i class="fa-solid fa-w mr-2"></i>Webflow</div>
-                        <div class="text-xl font-bold"><i class="fa-solid fa-ghost mr-2"></i>Ghost</div>
+                    <p class="text-gray-500 mb-6">Built exclusively for WordPress. Securely connects to publish directly to your blog.</p>
+                    <div class="flex justify-center flex-wrap gap-6 items-center text-primary">
+                        <div class="text-3xl font-bold flex items-center"><i class="fa-brands fa-wordpress text-4xl mr-3"></i> 100% WordPress Native</div>
                     </div>
                 </div>
                 <div>
@@ -460,7 +425,8 @@
     <section id="pricing" class="bg-secondary text-white py-24">
         <div class="container mx-auto px-6 max-w-6xl">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Start for <span class="text-primary">€49</span> /month</h2>
+                <!-- PRICE UPDATED TO €31 -->
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Start for <span class="text-primary">€31</span> /month</h2>
                 <p class="text-gray-400 text-lg max-w-xl mx-auto">Stop renting traffic. Replace expensive ad spend with compounding organic growth.</p>
             </div>
 
@@ -480,7 +446,8 @@
                         <text x="420" y="350" font-family="monospace" font-size="24" font-weight="bold" fill="#ef4444" text-anchor="end">€3,500.00</text>
                         <rect x="70" y="400" width="360" height="80" rx="12" fill="#4F46E5"/>
                         <text x="100" y="448" font-family="sans-serif" font-size="24" font-weight="bold" fill="#ffffff">AutoSEO Total</text>
-                        <text x="400" y="448" font-family="sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="end">€49.00</text>
+                        <!-- PRICE UPDATED TO €31 -->
+                        <text x="400" y="448" font-family="sans-serif" font-size="32" font-weight="bold" fill="#ffffff" text-anchor="end">€31.00</text>
                     </svg>
                 </div>
 
@@ -490,7 +457,8 @@
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl md:text-2xl font-bold text-secondary">SEO Autopilot</h3>
                         <div class="text-right">
-                            <p class="text-3xl md:text-4xl font-extrabold text-primary">€49</p>
+                            <!-- PRICE UPDATED TO €31 -->
+                            <p class="text-3xl md:text-4xl font-extrabold text-primary">€31</p>
                             <p class="text-gray-500 text-sm">/month</p>
                         </div>
                     </div>
@@ -498,7 +466,7 @@
                     <ul class="space-y-4 mb-8 text-sm text-gray-700">
                         <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> 100% of SEO work fully automated</li>
                         <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Unlimited blog post and content ideas</li>
-                        <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Automatic daily publishing to your CMS</li>
+                        <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Automatic daily publishing to WordPress</li>
                         <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Content proven to rank on Google & ChatGPT</li>
                     </ul>
 
@@ -520,7 +488,7 @@
                         What exactly does AutoSEO do?
                         <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
                     </summary>
-                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">AutoSEO automates your entire content strategy. It finds low-competition keywords, writes highly optimized articles mimicking your brand voice, and publishes them directly to your website daily while you sleep.</div>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">AutoSEO automates your entire content strategy. It finds low-competition keywords, writes highly optimized articles mimicking your brand voice, and publishes them directly to your WordPress website daily while you sleep.</div>
                 </details>
                 
                 <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
@@ -536,7 +504,7 @@
                         Can I connect AutoSEO to my existing website?
                         <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
                     </summary>
-                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Yes! We natively push generated articles directly to major CMS platforms like WordPress, Shopify, Webflow, and Ghost. You can also export the content if you use a custom setup.</div>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Yes! We are built specifically for WordPress. You can connect your site securely in seconds using WordPress Application Passwords, allowing us to push generated articles directly to your blog as drafts or published posts.</div>
                 </details>
 
                 <details class="bg-white rounded-2xl border border-gray-200 shadow-sm cursor-pointer group">
@@ -592,7 +560,8 @@
                         What makes AutoSEO different from other SEO tools?
                         <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
                     </summary>
-                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Most tools (DIY) just give you data and make you do the work. AutoSEO is a true autopilot—it finds the keywords, writes the content, AND publishes it for you, replacing a $5,000/month agency.</div>
+                    <!-- PRICE UPDATED TO €31 -->
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Most tools (DIY) just give you data and make you do the work. AutoSEO is a true autopilot—it finds the keywords, writes the content, AND publishes it for you, replacing a $5,000/month agency for just €31/mo.</div>
                 </details>
             </div>
         </div>
@@ -625,14 +594,12 @@
 
     <!-- Interactive Scripts -->
     <script>
-        // Mobile Menu Toggle
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
 
-        // Advanced Typing Effect Script (Now strictly isolated from translation)
         const textsToType = [
             'all while you sleep.',
             'proven to rank fast.',
