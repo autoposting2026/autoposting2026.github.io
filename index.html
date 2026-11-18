@@ -70,6 +70,17 @@
     <script type="text/javascript">
         const defaultSiteLang = 'en'; 
 
+        // ==========================================
+        // 1. PUT YOUR TALLY FORM LINKS HERE
+        // ==========================================
+        const formLinks = {
+            'en': 'https://tally.so/r/BEpep4',
+            'bg': 'https://tally.so/r/BEpep4',
+            'es': 'https://tally.so/r/BEpep4',
+            'de': 'https://tally.so/r/BEpep4',
+            'default': 'https://tally.so/r/BEpep4' 
+        };
+
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: defaultSiteLang,
@@ -83,18 +94,29 @@
                 selectElement.value = langCode;
                 selectElement.dispatchEvent(new Event('change'));
             }
+            
             document.cookie = `googtrans=/${defaultSiteLang}/${langCode}; path=/`;
             if (window.location.hostname) {
                 document.cookie = `googtrans=/${defaultSiteLang}/${langCode}; domain=.${window.location.hostname}; path=/`;
             }
+
+            const newLink = formLinks[langCode] || formLinks['default'];
+            const waitlistButtons = document.querySelectorAll('.waitlist-btn');
+            waitlistButtons.forEach(btn => {
+                btn.href = newLink;
+            });
         }
 
         window.onload = function() {
             setTimeout(() => {
                 const browserLang = (navigator.language || navigator.userLanguage).split('-')[0];
                 const hasTranslateCookie = document.cookie.indexOf('googtrans=') !== -1;
-                if (browserLang !== defaultSiteLang && !hasTranslateCookie) {
-                    changeLanguage(browserLang);
+                
+                const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/);
+                const currentLang = match ? match[1] : browserLang;
+
+                if (currentLang !== defaultSiteLang) {
+                    changeLanguage(currentLang);
                 }
             }, 1000);
         };
@@ -154,7 +176,9 @@
                         </div>
                     </div>
                 </div>
-                <a href="https://tally.so/r/BEpep4" class="hidden md:block bg-primary text-white px-5 py-2 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-md shrink-0 whitespace-nowrap">Join Waitlist</a>
+                
+                <a href="https://tally.so/r/BEpep4" class="waitlist-btn hidden md:block bg-primary text-white px-5 py-2 rounded-xl font-semibold hover:bg-indigo-700 transition shadow-md shrink-0 whitespace-nowrap">Join Waitlist</a>
+                
                 <button id="mobile-menu-btn" class="xl:hidden text-secondary focus:outline-none p-2 shrink-0">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
@@ -166,7 +190,8 @@
             <a href="#features" class="text-gray-600 hover:text-primary font-medium px-2">Features</a>
             <a href="#pricing" class="text-gray-600 hover:text-primary font-medium px-2">Pricing</a>
             <a href="#faq" class="text-gray-600 hover:text-primary font-medium px-2">FAQ</a>
-            <a href="https://tally.so/r/BEpep4" class="bg-primary text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md">Join Waitlist</a>
+            
+            <a href="YOUR_DEFAULT_ENGLISH_LINK_HERE" class="waitlist-btn bg-primary text-white px-6 py-3 rounded-xl font-semibold text-center shadow-md">Join Waitlist</a>
         </div>
     </nav>
 
@@ -190,10 +215,9 @@
         </div>
 
         <div class="flex justify-center mb-6 animate-on-load delay-300">
-            <!-- LEAN STARTUP: JOIN WAITLIST -->
-            <a href="https://tally.so/r/BEpep4" class="w-full sm:w-auto bg-secondary text-white px-12 py-4 text-lg rounded-full font-bold hover:bg-gray-800 transition shadow-xl transform hover:scale-105">Join the Waitlist</a>
+            <a href="YOUR_DEFAULT_ENGLISH_LINK_HERE" class="waitlist-btn w-full sm:w-auto bg-secondary text-white px-12 py-4 text-lg rounded-full font-bold hover:bg-gray-800 transition shadow-xl transform hover:scale-105">Join the Waitlist</a>
         </div>
-        <p class="text-sm text-gray-500 mb-12 animate-on-load delay-400">Limited early access spots available</p>
+        <p class="text-sm font-bold text-gray-500 mb-12 animate-on-load delay-400">Limited early access spots available &bull; <span class="text-primary">Just €1 a day</span></p>
 
         <!-- ENHANCED ANIMATED ROBOT HERO GRAPHIC -->
         <div class="notranslate w-full max-w-4xl mx-auto rounded-3xl p-4 md:p-8 bg-gray-900 shadow-2xl relative flex justify-center items-center overflow-hidden animate-on-load delay-400 border border-gray-800" translate="no">
@@ -425,7 +449,9 @@
     <section id="pricing" class="bg-secondary text-white py-24">
         <div class="container mx-auto px-6 max-w-6xl">
             <div class="text-center mb-16">
+                <!-- €1 A DAY COPY HERE -->
                 <h2 class="text-3xl md:text-5xl font-bold mb-4">Start for <span class="text-primary">€31</span> /month</h2>
+                <p class="text-indigo-300 font-bold text-xl md:text-2xl mb-4">That's just €1 a day to automate your SEO.</p>
                 <p class="text-gray-400 text-lg max-w-xl mx-auto">Stop renting traffic. Replace expensive ad spend with compounding organic growth.</p>
             </div>
 
@@ -467,8 +493,7 @@
                         <li class="flex items-center"><i class="fas fa-check text-primary mr-3"></i> Content proven to rank on Google & ChatGPT</li>
                     </ul>
 
-                    <!-- LEAN STARTUP: JOIN WAITLIST -->
-                    <a href="https://tally.so/r/BEpep4" class="block text-center w-full bg-secondary text-white px-8 py-4 text-lg rounded-xl font-bold hover:bg-gray-800 transition shadow-lg transform hover:scale-105">Join the Waitlist</a>
+                    <a href="YOUR_DEFAULT_ENGLISH_LINK_HERE" class="waitlist-btn block text-center w-full bg-secondary text-white px-8 py-4 text-lg rounded-xl font-bold hover:bg-gray-800 transition shadow-lg transform hover:scale-105">Join the Waitlist</a>
                     <p class="text-xs text-gray-400 mt-4 text-center"><i class="fas fa-envelope mr-1"></i> Reserve your spot today. No credit card required yet.</p>
                 </div>
             </div>
@@ -558,7 +583,7 @@
                         What makes AutoSEO different from other SEO tools?
                         <span class="text-primary group-open:rotate-180 transition transform duration-300"><i class="fas fa-chevron-down"></i></span>
                     </summary>
-                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Most tools (DIY) just give you data and make you do the work. AutoSEO is a true autopilot—it finds the keywords, writes the content, AND publishes it for you, replacing a $5,000/month agency for just €31/mo.</div>
+                    <div class="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">Most tools (DIY) just give you data and make you do the work. AutoSEO is a true autopilot—it finds the keywords, writes the content, AND publishes it for you, replacing a $5,000/month agency for just €31/mo (about €1 a day).</div>
                 </details>
             </div>
         </div>
@@ -568,9 +593,10 @@
     <section class="bg-primary text-white py-24 text-center">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl md:text-6xl font-extrabold mb-4">Ready to become <br class="hidden md:block">visible on Google?</h2>
-            <p class="text-xl md:text-2xl text-indigo-200 font-medium mb-10">(Without the agency fees)</p>
-            <!-- LEAN STARTUP: JOIN WAITLIST -->
-            <a href="https://tally.so/r/BEpep4" class="inline-block bg-white text-primary px-12 py-4 text-xl rounded-full font-bold hover:bg-gray-100 transition shadow-2xl transform hover:scale-105">Join the Waitlist</a>
+            <!-- €1 A DAY COPY HERE -->
+            <p class="text-xl md:text-2xl text-indigo-200 font-medium mb-10">Start automating your SEO for just €1 a day.</p>
+            
+            <a href="YOUR_DEFAULT_ENGLISH_LINK_HERE" class="waitlist-btn inline-block bg-white text-primary px-12 py-4 text-xl rounded-full font-bold hover:bg-gray-100 transition shadow-2xl transform hover:scale-105">Join the Waitlist</a>
         </div>
     </section>
 
